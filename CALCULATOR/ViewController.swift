@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     private let calcLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.text = "0"
+        label.text = "0" 
         label.font = .systemFont(ofSize: 65)
         return label
     }()
