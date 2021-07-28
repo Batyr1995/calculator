@@ -12,8 +12,23 @@ class ViewController: UIViewController {
     
     var count: Double = 0.0
     
-    var firstNum: Double = 0
-    var mathSign: Bool = false
+    var first = "0"
+    var second = "0"
+    var function = ""
+    var result = 0.0
+    var userInput = ""
+    
+    private var calcText: String = "0" {
+        didSet {
+            calcLabel.text = calcText
+            if calcLabel.text != "0" {
+                cleanButton.setTitle("C", for: .normal)
+            }else{
+                cleanButton.setTitle("AC", for: .normal)
+            }
+        }
+    }
+    
     
     private var isPressed: Bool = false
 
@@ -103,16 +118,18 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var multiplyButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemOrange
-        button.setTitle("x", for: .normal)
+        button.setTitle("*", for: .normal)
         button.layer.cornerRadius = 35
         button.titleLabel?.font = .systemFont(ofSize: 33)
         button.addTarget(self, action: #selector(tarMultiply), for: .touchUpInside)
         button.tintColor = .white
         return button
     }()
+    
     lazy var fourButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -123,6 +140,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var fiveButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -133,6 +151,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var sixButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -221,13 +240,13 @@ class ViewController: UIViewController {
         button.setTitle("=", for: .normal)
         button.layer.cornerRadius = 35
         button.titleLabel?.font = .systemFont(ofSize: 33)
-        button.addTarget(self, action: #selector(tarEquals), for: .touchUpInside)
+        button.addTarget(self, action: #selector(tarEqual), for: .touchUpInside)
         return button
     }()
     
     
     @objc func tarClean(){
-        calcLabel.text = "0"
+        calcText = "0"
         isPressed = false
     }
     @objc func tarPlusMinus() {
@@ -249,6 +268,9 @@ class ViewController: UIViewController {
     }
     
     @objc func tarDivide() {
+        function = "/"
+        first = calcText
+        calcText = ""
     }
     
     @objc func tarSeven() {
@@ -268,7 +290,9 @@ class ViewController: UIViewController {
         calcNumberFunc(number: "9")
     }
     @objc func tarMultiply() {
-        
+        function = "*"
+        first = userInput
+        userInput = ""
     }
     @objc func tarFour() {
         calcNumberFunc(number: "4")
@@ -280,6 +304,9 @@ class ViewController: UIViewController {
         calcNumberFunc(number: "6")
     }
     @objc func tarMinus() {
+        function = "-"
+        first = userInput
+        userInput = ""
     }
     @objc func tarOne() {
         calcNumberFunc(number: "1")
@@ -291,9 +318,9 @@ class ViewController: UIViewController {
         calcNumberFunc(number: "3")
     }
     @objc func tarPlus() {
-        
-        
-        
+        function = "+"
+        first = userInput
+        userInput = ""
     }
     
     @objc func tarZero() {
@@ -305,17 +332,42 @@ class ViewController: UIViewController {
             isPressed = true
         }
     }
-    @objc func tarEquals(){
+    @objc func tarEqual(){
+        
+        second = userInput
+        
+        var firstInput = 0.0
+        var secondInput = 0.0
+        firstInput = Double(first)!
+        secondInput = Double(second)!
+        if(function == "+")
+        {
+            result  = (firstInput + secondInput)
+            calcLabel.text = String(result)
+        }
+        else if (function == "-")
+        {
+           result = (firstInput - secondInput)
+            calcLabel.text = String(result)
+        }
+        else if(function == "*")
+        {
+          result = (firstInput * secondInput)
+            calcLabel.text = String(result)
+        }
+        else
+        {
+           result = (firstInput / secondInput)
+            calcLabel.text = String(result)
+        }
         
     }
     
     private func calcNumberFunc(number: String?){
-        var text = calcLabel.text
-        if text == "0" {
-            calcLabel.text = number
+        if calcText == "0" {
+            calcText = number ?? "0"
         }else{
-            text?.append(number ?? "")
-            calcLabel.text = text
+            calcText.append(number ?? "")
         }
     }
     
@@ -380,7 +432,6 @@ class ViewController: UIViewController {
             make.size.equalTo(70)
             make.left.equalToSuperview().inset(20)
         }
-        
         
         eightButton.snp.makeConstraints { (make) in
             make.top.equalTo(cleanButton.snp.bottom).offset(20)
