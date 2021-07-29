@@ -10,13 +10,23 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-    var count: Double = 0.0
+    var firstValue = true
+    var subTotal: Int?
+    var lastOperator: operatorType?
     
-    var first = "0"
-    var second = "0"
-    var function = ""
-    var result = 0.0
-    var userInput = ""
+    enum operatorType {
+        case plus
+        case minus
+        case multiply
+        case divide
+    }
+    
+    var plusIsActive: Bool = false
+    var minusIsActive: Bool = false
+    var multiplyIsActive: Bool = false
+    var dividedIsActive: Bool = false
+    
+    
     
     private var calcText: String = "0" {
         didSet {
@@ -29,7 +39,50 @@ class ViewController: UIViewController {
         }
     }
     
-    
+    private var plusTapped: Bool = false {
+        didSet {
+            if plusTapped == true {
+                plusButton.backgroundColor = .white
+                plusButton.setTitleColor(.systemOrange, for: .normal)
+            } else {
+                plusButton.backgroundColor = .systemOrange
+                plusButton.setTitleColor(.white, for: .normal)
+            }
+        }
+    }
+    private var minusTapped: Bool = false {
+        didSet {
+            if minusTapped == true {
+                minusButton.backgroundColor = .white
+                minusButton.setTitleColor(.systemOrange, for: .normal)
+            } else {
+                minusButton.backgroundColor = .systemOrange
+                minusButton.setTitleColor(.white, for: .normal)
+            }
+        }
+    }
+    private var multiplyTapped: Bool = false {
+        didSet {
+            if multiplyTapped == true {
+                multiplyButton.backgroundColor = .white
+                multiplyButton.setTitleColor(.systemOrange, for: .normal)
+            } else {
+                multiplyButton.backgroundColor = .systemOrange
+                multiplyButton.setTitleColor(.white, for: .normal)
+            }
+        }
+    }
+    private var divideTapped: Bool = false {
+        didSet {
+            if divideTapped == true {
+                divideButton.backgroundColor = .white
+                divideButton.setTitleColor(.systemOrange, for: .normal)
+            } else {
+                divideButton.backgroundColor = .systemOrange
+                divideButton.setTitleColor(.white, for: .normal)
+            }
+        }
+    }
     private var isPressed: Bool = false
 
     private let calcLabel: UILabel = {
@@ -39,7 +92,6 @@ class ViewController: UIViewController {
         label.font = .systemFont(ofSize: 65)
         return label
     }()
-    
     lazy var cleanButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .lightGray
@@ -50,7 +102,6 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(tarClean), for: .touchUpInside)
         return button
     }()
-    
     lazy var plusMinusButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .lightGray
@@ -61,7 +112,6 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(tarPlusMinus), for: .touchUpInside)
         return button
     }()
-    
     lazy var persentButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .lightGray
@@ -73,7 +123,6 @@ class ViewController: UIViewController {
         button.tintColor = .black
         return button
     }()
-    
     lazy var divideButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemOrange
@@ -84,7 +133,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var sevenButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -96,7 +144,6 @@ class ViewController: UIViewController {
         button.tag = 7
         return button
     }()
-    
     lazy var eightButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -107,7 +154,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var nineButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -118,18 +164,16 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var multiplyButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemOrange
-        button.setTitle("*", for: .normal)
+        button.setTitle("x", for: .normal)
         button.layer.cornerRadius = 35
         button.titleLabel?.font = .systemFont(ofSize: 33)
         button.addTarget(self, action: #selector(tarMultiply), for: .touchUpInside)
         button.tintColor = .white
         return button
     }()
-    
     lazy var fourButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -140,7 +184,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var fiveButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -151,7 +194,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var sixButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -162,7 +204,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var minusButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemOrange
@@ -173,8 +214,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
-    
     lazy var oneButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -215,7 +254,6 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
-    
     lazy var zeroButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -243,8 +281,6 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(tarEqual), for: .touchUpInside)
         return button
     }()
-    
-    
     @objc func tarClean(){
         calcText = "0"
         isPressed = false
@@ -260,22 +296,17 @@ class ViewController: UIViewController {
         }
         calcLabel.text = newText
     }
-    
     @objc func tarPersent() {
         var number = Double(calcLabel.text ?? "0")
         number = (number ?? 0) / 100
         calcLabel.text = "\(number ?? 0)"
     }
-    
     @objc func tarDivide() {
-        function = "/"
-        first = calcText
-        calcText = ""
+        divideTapped = true
+     
     }
-    
     @objc func tarSeven() {
         calcNumberFunc(number: "7")
-        
         
         if sevenButton.isEnabled == true {
             sevenButton.backgroundColor = .lightGray
@@ -285,84 +316,126 @@ class ViewController: UIViewController {
     }
     @objc func tarEigth() {
         calcNumberFunc(number: "8")
+        
+        if eightButton.isEnabled == true {
+            eightButton.backgroundColor = .lightGray
+        } else {
+            eightButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarNine() {
         calcNumberFunc(number: "9")
+        
+        if nineButton.isEnabled == true {
+            nineButton.backgroundColor = .lightGray
+        } else {
+            nineButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarMultiply() {
-        function = "*"
-        first = userInput
-        userInput = ""
+        multiplyTapped = true
+      
+    
     }
     @objc func tarFour() {
         calcNumberFunc(number: "4")
+        
+        if fourButton.isEnabled == true {
+            fourButton.backgroundColor = .lightGray
+        } else {
+            fourButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarFive() {
         calcNumberFunc(number: "5")
+        
+        if fiveButton.isEnabled == true {
+            fiveButton.backgroundColor = .lightGray
+        } else {
+            fiveButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarSix() {
         calcNumberFunc(number: "6")
+        
+        if sixButton.isEnabled == true {
+            sixButton.backgroundColor = .lightGray
+        } else {
+            sixButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarMinus() {
-        function = "-"
-        first = userInput
-        userInput = ""
+        minusTapped = true
+        
+      
+      
     }
     @objc func tarOne() {
         calcNumberFunc(number: "1")
+        
+        if oneButton.isEnabled == true {
+            oneButton.backgroundColor = .lightGray
+        } else {
+            oneButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarTwo(){
         calcNumberFunc(number: "2")
+        
+        if twoButton.isEnabled == true {
+            twoButton.backgroundColor = .lightGray
+        } else {
+            twoButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarThree() {
         calcNumberFunc(number: "3")
+        
+        if threeButton.isEnabled == true {
+            threeButton.backgroundColor = .lightGray
+        } else {
+            threeButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarPlus() {
-        function = "+"
-        first = userInput
-        userInput = ""
+        plusTapped = true
+      
+
     }
     
     @objc func tarZero() {
         calcNumberFunc(number: "0")
+        
+        if zeroButton.isEnabled == true {
+            zeroButton.backgroundColor = .lightGray
+        } else {
+            zeroButton.backgroundColor = .darkGray
+        }
+        
     }
     @objc func tarComma(){
         if isPressed == false{
             calcNumberFunc(number: ",")
             isPressed = true
         }
+        
+        
+        if commaButton.isEnabled == true {
+            commaButton.backgroundColor = .lightGray
+        } else {
+            commaButton.backgroundColor = .darkGray
+        }
     }
     @objc func tarEqual(){
+        var result: Int?
+        if let finalOperator = lastOperator {
+            
+        }
+        lastOperator = operatorType.divide
         
-        second = userInput
         
-        var firstInput = 0.0
-        var secondInput = 0.0
-        firstInput = Double(first)!
-        secondInput = Double(second)!
-        if(function == "+")
-        {
-            result  = (firstInput + secondInput)
-            calcLabel.text = String(result)
-        }
-        else if (function == "-")
-        {
-           result = (firstInput - secondInput)
-            calcLabel.text = String(result)
-        }
-        else if(function == "*")
-        {
-          result = (firstInput * secondInput)
-            calcLabel.text = String(result)
-        }
-        else
-        {
-           result = (firstInput / secondInput)
-            calcLabel.text = String(result)
-        }
         
     }
-    
     private func calcNumberFunc(number: String?){
         if calcText == "0" {
             calcText = number ?? "0"
@@ -370,14 +443,13 @@ class ViewController: UIViewController {
             calcText.append(number ?? "")
         }
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        //calcText.text = "0"
         setupView()
         setupConstraints()
     }
-    
     func setupView(){
         view.addSubview(calcLabel)
         view.addSubview(cleanButton)
@@ -400,8 +472,6 @@ class ViewController: UIViewController {
         view.addSubview(commaButton)
         view.addSubview(equalsButton)
     }
-    
-    
     func setupConstraints(){
         calcLabel.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(200)
@@ -506,8 +576,6 @@ class ViewController: UIViewController {
             make.size.equalTo(70)
             make.left.equalTo(commaButton.snp.right).offset(20)
         }
-        
     }
-
 }
 
