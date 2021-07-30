@@ -337,7 +337,7 @@ class ViewController: UIViewController {
     }
     @objc func tarSeven(sender: UIButton) {
         
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "7"
@@ -354,7 +354,7 @@ class ViewController: UIViewController {
         }
     }
     @objc func tarEigth() {
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "8"
@@ -372,7 +372,7 @@ class ViewController: UIViewController {
     }
     @objc func tarNine() {
         
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "9"
@@ -395,7 +395,7 @@ class ViewController: UIViewController {
         multiplyIsTapped = true
     }
     @objc func tarFour() {
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "4"
@@ -412,7 +412,7 @@ class ViewController: UIViewController {
     }
     @objc func tarFive() {
         
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "5"
@@ -429,7 +429,7 @@ class ViewController: UIViewController {
     }
     @objc func tarSix() {
         
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "6"
@@ -456,7 +456,7 @@ class ViewController: UIViewController {
     }
     @objc func tarOne() {
         
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "1"
@@ -480,7 +480,7 @@ class ViewController: UIViewController {
     }
     @objc func tarTwo(){
     
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "2"
@@ -496,7 +496,7 @@ class ViewController: UIViewController {
         }
     }
     @objc func tarThree() {
-        if plusIsActive == true{
+        if plusIsTapped == true {
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "3"
@@ -518,7 +518,7 @@ class ViewController: UIViewController {
     
     @objc func tarZero() {
         calcNumberFunc(number: "0")
-        if plusIsActive == true{
+        if plusIsTapped == true{
             plusIsTapped = false
             firstNumber = Double(calcText) ?? 0
             calcText = "0"
@@ -548,28 +548,11 @@ class ViewController: UIViewController {
     }
     @objc func tarEqual(){
         
-        
-        switch result {
-               case 0:
-                   result = firstNumber + secondNumber
-               case 1:
-                   result = firstNumber - secondNumber
-               case 2:
-                   result = firstNumber * secondNumber
-               case 3:
-                   result = firstNumber / secondNumber
-               default:
-                   result = 0
-               }
-        
-        
-        //lastOperator = operatorType.divide
-        
-        // secondNumber = calcLabel.text
-        //if operation - { firstnumber -secondNumber
-        //calcLabel = "result"
-       
-        
+        if plusIsActive == true {
+            secondNumber = Double(calcText) ?? 0
+            calcText = "\(firstNumber + secondNumber)"
+            firstNumber = firstNumber + secondNumber
+        }
     }
     
     
