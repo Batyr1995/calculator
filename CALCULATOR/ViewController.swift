@@ -290,9 +290,9 @@ class ViewController: UIViewController {
         return button
     }()
     
-    private func clearAllTapped(){
-        minusIsTapped = false
+    private func clearAllTapped() {
         plusIsTapped = false
+        minusIsTapped = false
         multiplyIsTapped = false
         dividedIsTapped = false
         minusIsActive = false
@@ -322,21 +322,10 @@ class ViewController: UIViewController {
         number = (number ?? 0) / 100
         calcLabel.text = "\(number ?? 0)"
     }
-    @objc func tarDivide() {
+
+    @objc func tarSeven() {
         
-        dividedIsActive = true
-        clearAllTapped()
-        dividedIsTapped = true
-    }
-    @objc func tarSeven(sender: UIButton) {
-        
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "7"
-        } else {
-            calcNumberFunc(number: "7")
-        }
+        universalFunc(number: "7")
         
         secondNumber = Double (calcLabel.text!)!
         
@@ -348,13 +337,7 @@ class ViewController: UIViewController {
     }
     
     @objc func tarEigth() {
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "8"
-        } else {
-            calcNumberFunc(number: "8")
-        }
+        universalFunc(number: "8")
         
         
         if eightButton.isEnabled == true {
@@ -365,13 +348,7 @@ class ViewController: UIViewController {
     }
     @objc func tarNine() {
         
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "9"
-        } else {
-            calcNumberFunc(number: "9")
-        }
+        universalFunc(number: "9")
         
         
         if nineButton.isEnabled == true {
@@ -380,20 +357,10 @@ class ViewController: UIViewController {
             nineButton.backgroundColor = .darkGray
         }
     }
-    @objc func tarMultiply() {
-        multiplyIsActive = true
-        clearAllTapped()
-        multiplyIsTapped = true
-    }
+
     
     @objc func tarFour() {
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "4"
-        } else {
-            calcNumberFunc(number: "4")
-        }
+        universalFunc(number: "4")
         
         
         if fourButton.isEnabled == true {
@@ -404,13 +371,7 @@ class ViewController: UIViewController {
     }
     @objc func tarFive() {
         
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "5"
-        } else {
-            calcNumberFunc(number: "5")
-        }
+        universalFunc(number: "5")
         
         
         if fiveButton.isEnabled == true {
@@ -421,13 +382,7 @@ class ViewController: UIViewController {
     }
     @objc func tarSix() {
         
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "6"
-        } else {
-            calcNumberFunc(number: "6")
-        }
+        universalFunc(number: "6")
         
         if sixButton.isEnabled == true {
             sixButton.backgroundColor = .lightGray
@@ -436,22 +391,34 @@ class ViewController: UIViewController {
         }
     }
     
+    @objc func tarPlus() {
+        clearAllTapped()
+        plusIsTapped = true
+        plusIsActive = true
+    }
     @objc func tarMinus() {
         clearAllTapped()
         minusIsTapped = true
         minusIsActive = true
     }
+    @objc func tarMultiply() {
+        clearAllTapped()
+        multiplyIsActive = true
+      
+        multiplyIsTapped = true
+    }
+    @objc func tarDivide() {
+        clearAllTapped()
+        dividedIsActive = true
+    
+        dividedIsTapped = true
+    }
+    
     @objc func tarOne() {
+        universalFunc(number: "1")
         
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "1"
-        } else {
-            calcNumberFunc(number: "1")
-        }
-        
-        
+
+    
         if oneButton.isEnabled == true {
             oneButton.backgroundColor = .lightGray
         } else {
@@ -459,14 +426,9 @@ class ViewController: UIViewController {
         }
     }
     @objc func tarTwo(){
-    
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "2"
-        } else {
-            calcNumberFunc(number: "2")
-        }
+        universalFunc(number: "2")
+        
+        
         
         if twoButton.isEnabled == true {
             twoButton.backgroundColor = .lightGray
@@ -475,13 +437,7 @@ class ViewController: UIViewController {
         }
     }
     @objc func tarThree() {
-        if plusIsTapped == true {
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "3"
-        }else{
-            calcNumberFunc(number: "3")
-        }
+        universalFunc(number: "3")
         
         if threeButton.isEnabled == true {
             threeButton.backgroundColor = .lightGray
@@ -490,22 +446,11 @@ class ViewController: UIViewController {
         }
     }
     
-    @objc func tarPlus() {
-        clearAllTapped()
-        plusIsTapped = true
-        plusIsActive = true
-    }
-    
     
     @objc func tarZero() {
+        universalFunc(number: "0")
         calcNumberFunc(number: "0")
-        if plusIsTapped == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "0"
-        }else{
-            calcNumberFunc(number: "0")
-        }
+     
         
         if zeroButton.isEnabled == true {
             zeroButton.backgroundColor = .lightGray
@@ -536,17 +481,20 @@ class ViewController: UIViewController {
             firstNumber = firstNumber + secondNumber
         }
         
+        
         if minusIsActive == true {
             secondNumber = Double(calcText) ?? 0
             calcText = "\(firstNumber - secondNumber)"
             firstNumber = firstNumber - secondNumber
         }
         
+        
         if multiplyIsActive == true {
             secondNumber = Double(calcText) ?? 0
             calcText = "\(firstNumber * secondNumber)"
             firstNumber = firstNumber * secondNumber
         }
+        
         
         if dividedIsActive == true {
             secondNumber = Double(calcText) ?? 0
@@ -559,10 +507,37 @@ class ViewController: UIViewController {
 
         if calcText == "0" {
             calcText = number ?? "0"
-        }else{
+        } else {
             calcText.append(number ?? "")
         }
     }
+    
+    private func universalFunc(number: String) {
+        
+        if minusIsTapped == true{
+            minusIsTapped = false
+            firstNumber = Double(calcText) ?? 0
+            calcText = number
+        } else if  plusIsTapped == true {
+            plusIsTapped = false
+            firstNumber = Double(calcText) ?? 0
+            calcText = number
+        } else if multiplyIsTapped == true {
+            multiplyIsTapped = false
+            firstNumber = Double(calcText) ?? 0
+            calcText = number
+        } else if dividedIsTapped == true {
+            dividedIsTapped = false
+            firstNumber = Double(calcText) ?? 0
+            calcText = number
+        }
+        else {
+            calcNumberFunc(number: number)
+        }
+  
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
