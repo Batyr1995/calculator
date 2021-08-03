@@ -15,8 +15,6 @@ class ViewController: UIViewController {
     
     //var lastOperator: operatorType?
     
-
-    
     
     var plusIsTapped: Bool = false {
         didSet {
@@ -29,6 +27,7 @@ class ViewController: UIViewController {
             }
         }
     }
+    
     var minusIsTapped: Bool = false {
         didSet {
             if minusIsTapped == true {
@@ -63,9 +62,6 @@ class ViewController: UIViewController {
         }
     }
 
-    
-    
-    
     var plusIsActive: Bool = false
     var minusIsActive: Bool = false
     var multiplyIsActive: Bool = false
@@ -76,14 +72,12 @@ class ViewController: UIViewController {
     var result: Double = 0
     
     
-    
-    
     private var calcText: String = "0" {
         didSet {
             calcLabel.text = calcText
             if calcLabel.text != "0" {
                 cleanButton.setTitle("C", for: .normal)
-            }else{
+            } else {
                 cleanButton.setTitle("AC", for: .normal)
             }
         }
@@ -139,6 +133,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var sevenButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -183,6 +178,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var fourButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -193,6 +189,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var fiveButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -203,6 +200,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var sixButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .darkGray
@@ -213,6 +211,7 @@ class ViewController: UIViewController {
         button.tintColor = .white
         return button
     }()
+    
     lazy var minusButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemOrange
@@ -302,10 +301,6 @@ class ViewController: UIViewController {
         dividedIsActive = false
     }
     
-    private func operationTap(){
-        
-    }
-    
     @objc func tarClean(){
         calcText = "0"
         isPressed = false
@@ -329,8 +324,6 @@ class ViewController: UIViewController {
     }
     @objc func tarDivide() {
         
-       
-       
         dividedIsActive = true
         clearAllTapped()
         dividedIsTapped = true
@@ -353,6 +346,7 @@ class ViewController: UIViewController {
             sevenButton.backgroundColor = .darkGray
         }
     }
+    
     @objc func tarEigth() {
         if plusIsTapped == true{
             plusIsTapped = false
@@ -362,7 +356,6 @@ class ViewController: UIViewController {
             calcNumberFunc(number: "8")
         }
         
-
         
         if eightButton.isEnabled == true {
             eightButton.backgroundColor = .lightGray
@@ -388,12 +381,11 @@ class ViewController: UIViewController {
         }
     }
     @objc func tarMultiply() {
-  
-      
         multiplyIsActive = true
         clearAllTapped()
         multiplyIsTapped = true
     }
+    
     @objc func tarFour() {
         if plusIsTapped == true{
             plusIsTapped = false
@@ -443,16 +435,11 @@ class ViewController: UIViewController {
             sixButton.backgroundColor = .darkGray
         }
     }
+    
     @objc func tarMinus() {
-       
-       
-        minusIsActive = true
         clearAllTapped()
         minusIsTapped = true
-        //calcLabel.text = "0"
-        //operation = "-"
-    
-      
+        minusIsActive = true
     }
     @objc func tarOne() {
         
@@ -464,13 +451,6 @@ class ViewController: UIViewController {
             calcNumberFunc(number: "1")
         }
         
-        if plusIsActive == true{
-            plusIsTapped = false
-            firstNumber = Double(calcText) ?? 0
-            calcText = "1"
-        } else {
-            calcNumberFunc(number: "1")
-        }
         
         if oneButton.isEnabled == true {
             oneButton.backgroundColor = .lightGray
@@ -487,7 +467,6 @@ class ViewController: UIViewController {
         } else {
             calcNumberFunc(number: "2")
         }
-        
         
         if twoButton.isEnabled == true {
             twoButton.backgroundColor = .lightGray
@@ -510,11 +489,13 @@ class ViewController: UIViewController {
             threeButton.backgroundColor = .darkGray
         }
     }
+    
     @objc func tarPlus() {
         clearAllTapped()
         plusIsTapped = true
         plusIsActive = true
     }
+    
     
     @objc func tarZero() {
         calcNumberFunc(number: "0")
@@ -531,8 +512,8 @@ class ViewController: UIViewController {
         } else {
             zeroButton.backgroundColor = .darkGray
         }
-        
     }
+    
     @objc func tarComma(){
         if isPressed == false{
             calcNumberFunc(number: ",")
@@ -546,6 +527,7 @@ class ViewController: UIViewController {
             commaButton.backgroundColor = .darkGray
         }
     }
+    
     @objc func tarEqual(){
         
         if plusIsActive == true {
@@ -553,24 +535,38 @@ class ViewController: UIViewController {
             calcText = "\(firstNumber + secondNumber)"
             firstNumber = firstNumber + secondNumber
         }
+        
+        if minusIsActive == true {
+            secondNumber = Double(calcText) ?? 0
+            calcText = "\(firstNumber - secondNumber)"
+            firstNumber = firstNumber - secondNumber
+        }
+        
+        if multiplyIsActive == true {
+            secondNumber = Double(calcText) ?? 0
+            calcText = "\(firstNumber * secondNumber)"
+            firstNumber = firstNumber * secondNumber
+        }
+        
+        if dividedIsActive == true {
+            secondNumber = Double(calcText) ?? 0
+            calcText = "\(firstNumber / secondNumber)"
+            firstNumber = firstNumber / secondNumber
+        }
     }
-    
     
     private func calcNumberFunc(number: String?){
 
-        
         if calcText == "0" {
             calcText = number ?? "0"
         }else{
             calcText.append(number ?? "")
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        
-        //calcText.text = "0"
-        
         setupView()
         setupConstraints()
     }
